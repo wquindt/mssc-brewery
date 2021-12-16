@@ -1,0 +1,85 @@
+openapi: "3.0.3"
+info:
+  title: "github API"
+  description: "github API"
+  version: "1.0.0"
+servers:
+  - url: "https://github"
+paths:
+  /api/v1/beer:
+    post:
+      summary: "POST api/v1/beer"
+      operationId: "handlePost"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/beer/{beerId}:
+    get:
+      summary: "GET api/v1/beer/{beerId}"
+      operationId: "getBeer"
+      parameters:
+        - name: "beerId"
+          in: "path"
+          required: true
+      responses:
+        "200":
+          description: "OK"
+    put:
+      summary: "PUT api/v1/beer/{beerId}"
+      operationId: "handleUpdate"
+      parameters:
+        - name: "beerId"
+          in: "path"
+          required: true
+      responses:
+        "200":
+          description: "OK"
+    delete:
+      summary: "DELETE api/v1/beer/{beerId}"
+      operationId: "handleDelete"
+      parameters:
+        - name: "beerId"
+          in: "path"
+          required: true
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/customer:
+    post:
+      summary: "POST api/v1/customer"
+      operationId: "handlePost"
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/customer/{customerId}:
+    put:
+      summary: "PUT api/v1/customer/{customerId}"
+      operationId: "handleUpdate"
+      parameters:
+        - name: "customerId"
+          in: "path"
+          required: true
+      responses:
+        "200":
+          description: "OK"
+    delete:
+      summary: "DELETE api/v1/customer/{customerId}"
+      operationId: "handleDelete"
+      parameters:
+        - name: "customerId"
+          in: "path"
+          required: true
+      responses:
+        "200":
+          description: "OK"
+  /api/v1/customer/{id}:
+    get:
+      summary: "GET api/v1/customer/{id}"
+      operationId: "getBeer"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+      responses:
+        "200":
+          description: "OK"
