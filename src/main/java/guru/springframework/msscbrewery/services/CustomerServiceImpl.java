@@ -32,6 +32,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteById(UUID customerId) {
-        log.info("Delete customer by ID" + customerId.toString());
+        log.info("Delete customer by ID " + customerId.toString());
     }
 }
