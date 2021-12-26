@@ -5,8 +5,13 @@ import guru.springframework.msscbrewery.web.model.CustomerDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -30,10 +35,10 @@ public class CustomerController {
 
 
     @PostMapping //POST - Create new Customer
-    public ResponseEntity handlePost(@RequestBody CustomerDto customerDto){
-        CustomerDto savedDto=service.saveNewCustomer(customerDto);
+    public ResponseEntity handlePost(@Valid @RequestBody CustomerDto customerDto) {
+        CustomerDto savedDto = service.saveNewCustomer(customerDto);
 
-        HttpHeaders headers=new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         //TODO: add hostname to url
         headers.add("Location", RequestUrls.CUSTOMER + "/" + savedDto.getId().toString());
 
@@ -41,7 +46,7 @@ public class CustomerController {
     }
 
     @PutMapping({"/{customerId}"})
-    public ResponseEntity handleUpdate(@PathVariable("customerId") UUID customerId, @RequestBody CustomerDto customerDto){
+    public ResponseEntity handleUpdate(@PathVariable("customerId") UUID customerId, @Valid @RequestBody CustomerDto customerDto) {
         service.updateCustomer(customerId, customerDto);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -49,8 +54,20 @@ public class CustomerController {
 
     @DeleteMapping({"/{customerId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void handleDelete(@PathVariable("customerId") UUID customerId){
+    public void handleDelete(@PathVariable("customerId") UUID customerId) {
         service.deleteById(customerId);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> validationErrorHandler(MethodArgumentNotValidException exception) {
+        Map<String, String> errors = new HashMap<>();
+        exception.getBindingResult().getAllErrors().forEach(error -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 
 }
